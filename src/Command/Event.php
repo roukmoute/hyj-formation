@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Formation;
+namespace Formation\Command;
 
 interface Event
 {
-
 }
