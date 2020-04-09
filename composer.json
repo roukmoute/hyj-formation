@@ -1,0 +1,29 @@
+{
+    "name": "roukmoute/hyj-formation",
+    "type": "project",
+    "license": "MIT",
+    "description": "HYJ formation",
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.1"
+    },
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "Formation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Formation\\": "tests"
+        }
+    }
+}
