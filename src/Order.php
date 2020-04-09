@@ -6,16 +6,13 @@ namespace Formation;
 
 class Order
 {
-    /** @var array */
-    private $raised;
-
     /**@var OrderProjection */
     private OrderProjection $projection;
 
     public function __construct(array $events = [])
     {
         $this->projection = new OrderProjection();
-        $this->raised = [];
+        $this->raised = new EventPublisher();
 
         foreach ($events as $event) {
             $this->raise($event);
@@ -54,7 +51,7 @@ class Order
             return;
         }
 
-        $this->raised[get_class($event)] = $event;
+        $this->raised->publish($event);
     }
 
     public function events(): array
