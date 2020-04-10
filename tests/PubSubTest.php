@@ -37,7 +37,8 @@ class PubSubTest extends TestCase
 
     public function test_Should_display_updated_projection_when_send_command()
     {
-        $order = new Order([new OrderStarted()]);
+        $order = new Order();
+        $order->start();
 
         $projection = new WaitingOrdersProjection();
         $orderId = new OrderId('foo');
