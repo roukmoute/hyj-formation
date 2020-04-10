@@ -7,7 +7,7 @@ namespace Formation;
 use Formation\Command\MarchandiseReceived;
 use Formation\Command\OrderStarted;
 use Formation\Query\OrderId;
-use Formation\Query\WaitingOrders;
+use Formation\Query\WaitingOrdersProjection;
 use PHPUnit\Framework\TestCase;
 
 class OrderQueryTest extends TestCase
@@ -16,7 +16,7 @@ class OrderQueryTest extends TestCase
     {
         $orderId = new OrderId('foo');
 
-        $waitingOrders = new WaitingOrders();
+        $waitingOrders = new WaitingOrdersProjection();
         $waitingOrders->handle(new OrderStarted(), $orderId);
 
         $this->assertContainsEquals($orderId, $waitingOrders->orderIds());
@@ -26,7 +26,7 @@ class OrderQueryTest extends TestCase
     {
         $orderId = new OrderId('foo');
 
-        $waitingOrders = new WaitingOrders();
+        $waitingOrders = new WaitingOrdersProjection();
         $waitingOrders->handle(new OrderStarted(), $orderId);
         $waitingOrders->handle(new MarchandiseReceived(), $orderId);
 
@@ -38,7 +38,7 @@ class OrderQueryTest extends TestCase
         $orderIdA = new OrderId('A');
         $orderIdB = new OrderId('B');
 
-        $waitingOrders = new WaitingOrders();
+        $waitingOrders = new WaitingOrdersProjection();
         $waitingOrders->handle(new OrderStarted(), $orderIdA);
         $waitingOrders->handle(new OrderStarted(), $orderIdB);
         $waitingOrders->handle(new MarchandiseReceived(), $orderIdB);

@@ -7,7 +7,10 @@ namespace Formation\Command;
 class Order
 {
     /** @var array */
-    private $raised;
+    private $events;
+
+    /** @var array */
+    private $uncommittedEvents;
 
     /**@var OrderProjection */
     private OrderProjection $projection;
@@ -15,11 +18,14 @@ class Order
     public function __construct(array $events = [])
     {
         $this->projection = new OrderProjection();
-        $this->raised = [];
+        $this->events = [];
+        $this->uncommittedEvents = [];
 
         foreach ($events as $event) {
             $this->raise($event);
         }
+
+        $this->uncommittedEvents = [];
     }
 
     public function start(int $nbPackages = null)
@@ -29,7 +35,15 @@ class Order
 
     public function takeMarchandise(int $nbPackagesTaken = null)
     {
-        if (in_array(MarchandiseReceived::class, array_keys($this->events()))) {
+        if (in_array(
+            MarchandiseReceived::class,
+            array_map(
+                function (Event $event) {
+                    return get_class($event);
+                },
+                $this->events()
+            )
+        )) {
             return;
         }
 
@@ -54,17 +68,23 @@ class Order
             return;
         }
 
-        $this->raised[get_class($event)] = $event;
+        $this->addEvent($event);
     }
 
     public function events(): array
     {
-        return $this->raised;
+        return $this->events;
     }
 
     // Les évènements après le constructeur
     public function uncommitedEvents(): array
     {
-        return $this->raised;
+        return $this->uncommittedEvents;
+    }
+
+    private function addEvent(Event $event): void
+    {
+        $this->uncommittedEvents[] = $event;
+        $this->events[] = $event;
     }
 }

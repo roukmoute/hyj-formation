@@ -7,8 +7,9 @@ namespace Formation\Query;
 use Formation\Command\Event;
 use Formation\Command\MarchandiseReceived;
 use Formation\Command\OrderStarted;
+use Formation\PubSub\Handler;
 
-class WaitingOrders
+class WaitingOrdersProjection implements Handler
 {
     /** @var Event */
     private Event $event;
